@@ -6,11 +6,17 @@
 
 * [msgpack-csharp](https://github.com/highras/msgpack-csharp)
 
-* [fpnn-sdk-csharp](https://github.com/highras/fpnn-sdk-csharp/tree/master)
+* [fpnn-sdk-csharp](https://github.com/highras/fpnn-sdk-csharp) (For C#)
+
+* [fpnn-sdk-unity](https://github.com/highras/fpnn-sdk-unity) (For Unity)
 
 ### Compatibility Version:
 
 C# .Net Standard 2.0
+
+### Capability in Funture
+
+Encryption Capability, depending on FPNN C# SDK.
 
 ## Usage
 
@@ -20,13 +26,15 @@ C# .Net Standard 2.0
 
 ### Init
 
-#### FPNN SDK (Unity is REQUIRED, other is optional)
+**Init for Unity MUST in the main thread.**
+
+#### FPNN SDK Init (Unity is REQUIRED, other is optional)
 
 	using com.fpnn;
 	ClientEngine.Init();
 	ClientEngine.Init(Config config);
 
-#### RTM SDK (Unity is REQUIRED, other is optional)
+#### RTM SDK Init (Unity is REQUIRED, other is optional)
 
 	using com.fpnn.rtm;
 	RTMControlCenter.Init();
@@ -38,92 +46,83 @@ C# .Net Standard 2.0
 
 Please get your project params from RTM Console.
 
-### Configure
+### RTMClient Instance Configure
 
+#### Configure Properties:
 
+	public int ConnectTimeout;
+	public int QuestTimeout;
+	public com.fpnn.common.ErrorRecorder ErrorRecorder;
 
-/////--- TODO
-* Basic configs
+### Login
 
-		client.SetAutoReconnect(autoReconnect bool) 
-		client.SetConnectTimeOut(timeout time.Duration)
-		client.SetQuestTimeOut(timeout time.Duration)
-		client.SetLogger(logger *log.Logger)
+	//-- Async interfaces
+	public bool Login(AuthDelegate callback, string token, int timeout = 0);
+	public bool Login(AuthDelegate callback, string token, Dictionary<string, string> attr, TranslateLanguage language = TranslateLanguage.None, int timeout = 0);
 
-	**Note**  
-	**autoReconnect** means establishing the connection in implicit or explicit. NOT keep the connection.
-
-* Set message monitor
-
-		client.SetMonitor(monitor RTMServerMonitor)
-
-* Set connection events' callbacks
-
-		client.SetOnConnectedCallback(onConnected func(connId uint64))
-		client.SetOnClosedCallback(onClosed func(connId uint64))
-
-* Config encrypted connection
-	
-		client.EnableEncryptor(pemKeyPath string)
-		client.EnableEncryptor(pemKeyData []byte)
-
-	RTM Server-End Go SDK using **ECC**/**ECDH** to exchange the secret key, and using **AES-128** or **AES-256** in **CFB** mode to encrypt the whole session in **stream** way.
-
-
-### Connect/Dial (Optional)
-
-	client.Connect()
-	client.Dial()
-
-Call one of these methods to do an explicit connecting action.  
-If client.SetAutoReconnect(false) is called, one of these explicit connecting methods MUST be called; otherwise, these methods are optional.
+	//-- Sync interfaces
+	public int RTMClient.Login(out bool ok, string token, int timeout = 0);
+	public int RTMClient.Login(out bool ok, string token, Dictionary<string, string> attr, TranslateLanguage language = TranslateLanguage.None, int timeout = 0);
 
 ### Send messages
 
 * Send P2P Message
 
-		mtime, err := client.SendMessage(fromUid int64, toUid int64, mtype int8, message string)
-		mtime, err := client.SendMessage(fromUid int64, toUid int64, mtype int8, message string, timeout time.Duration)
+		//-- Async interface
+		public bool SendMessage(ActTimeDelegate callback, long uid, byte mtype, string message, string attrs = "", int timeout = 0);
 
-		_, err := client.SendMessage(fromUid int64, toUid int64, mtype int8, message string, callback func (mtime int64, errorCode int, errInfo string))
-		_, err := client.SendMessage(fromUid int64, toUid int64, mtype int8, message string, callback func (mtime int64, errorCode int, errInfo string), timeout time.Duration)
+		//-- Sync interface
+		public int SendMessage(out long mtime, long uid, byte mtype, string message, string attrs = "", int timeout = 0);
 
-* Send Multi-Receivers P2P Message
-
-		mtime, err := client.SendMessages(fromUid int64, toUids []int64, mtype int8, message string)
-		mtime, err := client.SendMessages(fromUid int64, toUids []int64, mtype int8, message string, timeout time.Duration)
-
-		_, err := client.SendMessages(fromUid int64, toUids []int64, mtype int8, message string, callback func (mtime int64, errorCode int, errInfo string))
-		_, err := client.SendMessages(fromUid int64, toUids []int64, mtype int8, message string, callback func (mtime int64, errorCode int, errInfo string), timeout time.Duration)
 
 * Send Group Message
 	
-		mtime, err := client.SendGroupMessage(fromUid int64, groupId int64, mtype int8, message string)
-		mtime, err := client.SendGroupMessage(fromUid int64, groupId int64, mtype int8, message string, timeout time.Duration)
+		//-- Async interface
+		public bool SendGroupMessage(ActTimeDelegate callback, long groupId, byte mtype, string message, string attrs = "", int timeout = 0);
 
-		_, err := client.SendGroupMessage(fromUid int64, groupId int64, mtype int8, message string, callback func (mtime int64, errorCode int, errInfo string))
-		_, err := client.SendGroupMessage(fromUid int64, groupId int64, mtype int8, message string, callback func (mtime int64, errorCode int, errInfo string), timeout time.Duration)
+		//-- Sync interface
+		public int SendGroupMessage(out long mtime, long groupId, byte mtype, string message, string attrs = "", int timeout = 0);
 
 * Send Room Message
 
-		mtime, err := client.SendRoomMessage(fromUid int64, roomId int64, mtype int8, message string)
-		mtime, err := client.SendRoomMessage(fromUid int64, roomId int64, mtype int8, message string, timeout time.Duration)
+		//-- Async interface
+		public bool SendRoomMessage(ActTimeDelegate callback, long roomId, byte mtype, string message, string attrs = "", int timeout = 0);
 
-		_, err := client.SendRoomMessage(fromUid int64, roomId int64, mtype int8, message string, callback func (mtime int64, errorCode int, errInfo string))
-		_, err := client.SendRoomMessage(fromUid int64, roomId int64, mtype int8, message string, callback func (mtime int64, errorCode int, errInfo string), timeout time.Duration)
+		//-- Sync interface
+		public int SendRoomMessage(out long mtime, long roomId, byte mtype, string message, string attrs = "", int timeout = 0);
 
-* Send Boradcast Message
 
-		mtime, err := client.SendBoradcastMessage(fromUid int64, mtype int8, message string)
-		mtime, err := client.SendBoradcastMessage(fromUid int64, mtype int8, message string, timeout time.Duration)
+### Send chat
 
-		_, err := client.SendBoradcastMessage(fromUid int64, mtype int8, message string, callback func (mtime int64, errorCode int, errInfo string))
-		_, err := client.SendBoradcastMessage(fromUid int64, mtype int8, message string, callback func (mtime int64, errorCode int, errInfo string), timeout time.Duration)
+* Send P2P Chat
 
+		//-- Async interface
+		public bool SendChat(ActTimeDelegate callback, long uid, string message, string attrs = "", int timeout = 0);
+
+		//-- Sync interface
+		public int SendChat(out long mtime, long uid, string message, string attrs = "", int timeout = 0);
+
+
+* Send Group Chat
+	
+		//-- Async interface
+		public bool SendGroupChat(ActTimeDelegate callback, long groupId, string message, string attrs = "", int timeout = 0);
+
+		//-- Sync interface
+		public int SendGroupChat(out long mtime, long groupId, string message, string attrs = "", int timeout = 0);
+
+* Send Room Chat
+
+		//-- Async interface
+		public bool SendRoomChat(ActTimeDelegate callback, long roomId, string message, string attrs = "", int timeout = 0);
+
+		//-- Sync interface
+		public int SendRoomChat(out long mtime, long roomId, string message, string attrs = "", int timeout = 0);
 
 ### SDK Version
 
-	fmt.Println("RTM Server-End Go SDK Version:", rtm.SDKVersion)
+	C# `Console.WriteLine("com.fpnn.rtm.RTMConfig.SDKVersion");`
+	Unity `Debug.Log("com.fpnn.rtm.RTMConfig.SDKVersion");`
 
 ## API docs
 
@@ -132,14 +131,52 @@ Please refer: [API docs](doc/API.md)
 
 ## Directory structure
 
-* **<rtm-server-sdk-go>/src**
+### C# Version
 
-	Codes of SDK.
+* **<rtm-client-sdk-csharp>/com.fpnn**
 
-* **<rtm-server-sdk-go>/example**
+	Codes of FPNN SDK.
 
-	Examples codes for using this SDK.
+* **<rtm-client-sdk-csharp>/com.fpnn.rtm**
 
-* **<rtm-server-sdk-go>/doc**
+	Codes of RTM SDK.
+
+* **<rtm-client-sdk-csharp>/examples**
+
+	Examples codes for using RTM SDK.
+
+* **<rtm-client-sdk-csharp>/doc**
+
+	API documents in markdown format.
+
+### Unity Version
+
+* **<rtm-client-sdk-unity>/Assets/Plugins/fpnn**
+
+	Codes of FPNN SDK.
+
+* **<rtm-client-sdk-unity>/Assets/Plugins/rtm**
+
+	Codes of RTM SDK.
+
+* **<rtm-client-sdk-unity>/Assets/Examples**
+
+	Examples codes for using RTM SDK.
+
+* **<rtm-client-sdk-unity>/Assets/**
+
+	* Main.cs:
+
+		Entery of all examples.
+
+	* ErrorRecorder.cs:
+
+		Demo implementation of com.fpnn.common.ErrorRecorder for all examples.
+
+	* RTMExampleQuestProcessor.cs:
+
+		Demo implementation of com.fpnn.rtm.IRTMQuestProcessor for all examples.
+
+* **<rtm-client-sdk-unity>/doc**
 
 	API documents in markdown format.
