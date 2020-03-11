@@ -6,6 +6,20 @@ namespace com.fpnn.rtm
 {
     public partial class RTMClient
     {
+        internal static string GetTranslatedLanguage(TranslateLanguage language)
+        {
+            if (language == TranslateLanguage.None)
+                return "";
+
+            if (language == TranslateLanguage.zh_cn)
+                return "zh-CN";
+
+            if (language == TranslateLanguage.zh_tw)
+                return "zh-TW";
+
+            return language.ToString("G");
+        }
+
         private HashSet<long> WantLongHashSet(Message message, string key)
         {
             HashSet<long> rev = new HashSet<long>();

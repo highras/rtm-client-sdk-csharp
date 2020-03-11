@@ -326,20 +326,6 @@ namespace com.fpnn.rtm
         }
 
         //===========================[ Set Translated Languag ]=========================//
-        private string GetTranslatedLanguage(TranslateLanguage language)
-        {
-            if (language == TranslateLanguage.None)
-                return "";
-
-            if (language == TranslateLanguage.zh_cn)
-                return "zh-CN";
-
-            if (language == TranslateLanguage.zh_tw)
-                return "zh-TW";
-
-            return language.ToString("G");
-        }
-
         public bool SetTranslatedLanguage(DoneDelegate callback, TranslateLanguage targetLanguage, int timeout = 0)
         {
             return SetTranslatedLanguage(callback, GetTranslatedLanguage(targetLanguage), timeout);
@@ -388,6 +374,16 @@ namespace com.fpnn.rtm
 
         //-- Action<TranslatedMessage, errorCode>
         public bool Translate(Action<TranslatedMessage, int> callback, string text,
+            TranslateLanguage destinationLanguage, TranslateLanguage sourceLanguage = TranslateLanguage.None,
+            TranslateType type = TranslateType.Chat, ProfanityType profanity = ProfanityType.Off,
+            bool postProfanity = false, int timeout = 0)
+        {
+            return Translate(callback, text, GetTranslatedLanguage(destinationLanguage),
+                GetTranslatedLanguage(sourceLanguage), type, profanity, postProfanity, timeout);
+        }
+
+        //-- Action<TranslatedMessage, errorCode>
+        private bool Translate(Action<TranslatedMessage, int> callback, string text,
             string destinationLanguage, string sourceLanguage = "",
             TranslateType type = TranslateType.Chat, ProfanityType profanity = ProfanityType.Off,
             bool postProfanity = false, int timeout = 0)
@@ -441,6 +437,15 @@ namespace com.fpnn.rtm
         }
 
         public int Translate(out TranslatedMessage translatedMessage, string text,
+            TranslateLanguage destinationLanguage, TranslateLanguage sourceLanguage = TranslateLanguage.None,
+            TranslateType type = TranslateType.Chat, ProfanityType profanity = ProfanityType.Off,
+            bool postProfanity = false, int timeout = 0)
+        {
+            return Translate(out translatedMessage, text, GetTranslatedLanguage(destinationLanguage),
+                GetTranslatedLanguage(sourceLanguage), type, profanity, postProfanity, timeout);
+        }
+
+        private int Translate(out TranslatedMessage translatedMessage, string text,
             string destinationLanguage, string sourceLanguage = "",
             TranslateType type = TranslateType.Chat, ProfanityType profanity = ProfanityType.Off,
             bool postProfanity = false, int timeout = 0)
