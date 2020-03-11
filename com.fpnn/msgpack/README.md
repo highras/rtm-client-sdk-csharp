@@ -15,7 +15,7 @@ C# .Net Standard 2.0
 
     Decimal, Tuple
 
-    byte[], DateTime, IEnumerable (such as List, Dictionary, List<object>, Dictionary<object, object>, ...)
+    byte[], DateTime, IEnumerable (such as List, Dictionary, List\<object\>, Dictionary\<object, object\>, ...)
 
 * usage:
 
@@ -31,7 +31,7 @@ C# .Net Standard 2.0
 
     null, bool, sbyte, byte, short, ushort, Int32, UInt32, Int64, Uint64, float, double, string
 
-    byte[], DateTime, List<object>, Dictionary<object, object>
+    byte[], DateTime, List\<object\>, Dictionary\<object, object\>
 
 * usage:
 

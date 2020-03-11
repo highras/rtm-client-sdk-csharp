@@ -137,33 +137,33 @@ Please refer: [API docs](doc/API.md)
 
 	Codes of FPNN SDK.
 
-* **<rtm-client-sdk-csharp>/com.fpnn.rtm**
+* **\<rtm-client-sdk-csharp\>/com.fpnn.rtm**
 
 	Codes of RTM SDK.
 
-* **<rtm-client-sdk-csharp>/examples**
+* **\<rtm-client-sdk-csharp\>/examples**
 
 	Examples codes for using RTM SDK.
 
-* **<rtm-client-sdk-csharp>/doc**
+* **\<rtm-client-sdk-csharp\>/doc**
 
 	API documents in markdown format.
 
 ### Unity Version
 
-* **<rtm-client-sdk-unity>/Assets/Plugins/fpnn**
+* **\<rtm-client-sdk-unity\>/Assets/Plugins/fpnn**
 
 	Codes of FPNN SDK.
 
-* **<rtm-client-sdk-unity>/Assets/Plugins/rtm**
+* **\<rtm-client-sdk-unity\>/Assets/Plugins/rtm**
 
 	Codes of RTM SDK.
 
-* **<rtm-client-sdk-unity>/Assets/Examples**
+* **\<rtm-client-sdk-unity\>/Assets/Examples**
 
 	Examples codes for using RTM SDK.
 
-* **<rtm-client-sdk-unity>/Assets/**
+* **\<rtm-client-sdk-unity\>/Assets/**
 
 	* Main.cs:
 
@@ -177,6 +177,6 @@ Please refer: [API docs](doc/API.md)
 
 		Demo implementation of com.fpnn.rtm.IRTMQuestProcessor for all examples.
 
-* **<rtm-client-sdk-unity>/doc**
+* **\<rtm-client-sdk-unity\>/doc**
 
 	API documents in markdown format.
