@@ -133,7 +133,7 @@ Please refer: [API docs](doc/API.md)
 
 ### C# Version
 
-* **<rtm-client-sdk-csharp>/com.fpnn**
+* **\<rtm-client-sdk-csharp\>/com.fpnn**
 
 	Codes of FPNN SDK.
 

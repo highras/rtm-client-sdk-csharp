@@ -81,7 +81,7 @@ Parameters:
 
 + `List<HistoryMessage> messages`
 
-	Retrieved history messages. Declaration of struct HistoryMessage can be found in [RTM Structures](Structures.md#HistoryMessage).
+	Retrieved history messages. Declaration of struct HistoryMessage can be found at [HistoryMessage](Structures.md#HistoryMessage).
 
 + `int errorCode`
 
