@@ -47,6 +47,9 @@ namespace com.fpnn.rtm
             List<string> rev = new List<string>();
 
             List<object> originalList = (List<object>)message.Get(key);
+            if (originalList == null)
+                return null;
+
             foreach (object obj in originalList)
                 rev.Add((string)Convert.ChangeType(obj, TypeCode.String));
 
