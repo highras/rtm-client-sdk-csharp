@@ -6,9 +6,7 @@
 
 * [msgpack-csharp](https://github.com/highras/msgpack-csharp)
 
-* [fpnn-sdk-csharp](https://github.com/highras/fpnn-sdk-csharp) (For C#)
-
-* [fpnn-sdk-unity](https://github.com/highras/fpnn-sdk-unity) (For Unity)
+* [fpnn-sdk-csharp](https://github.com/highras/fpnn-sdk-csharp)
 
 ### Compatibility Version:
 

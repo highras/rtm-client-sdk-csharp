@@ -4,7 +4,7 @@
 
 [TOC]
 
-### Send P2P chat
+### Send P2P Chat
 
 	//-- Async Method
 	public bool SendChat(ActTimeDelegate callback, long uid, string message, string attrs = "", int timeout = 0);
@@ -59,7 +59,7 @@ Return Values:
 	Others are the reason for sending failed.
 
 
-### Send Group chat
+### Send Group Chat
 
 	//-- Async Method
 	public bool SendGroupChat(ActTimeDelegate callback, long groupId, string message, string attrs = "", int timeout = 0);
@@ -114,7 +114,7 @@ Return Values:
 	Others are the reason for sending failed.
 
 
-### Send Room chat
+### Send Room Chat
 
 	//-- Async Method
 	public bool SendRoomChat(ActTimeDelegate callback, long roomId, string message, string attrs = "", int timeout = 0);
@@ -784,7 +784,7 @@ Parameters:
 
 	Callabck for async method.  
 	First `List<long>` is uids list which including the peer uids that have the unread chat messages;  
-	Second `List<long>` is group ids list which including the groups that have the unread chat messages.
+	Second `List<long>` is group ids list which including the groups that have the unread chat messages.  
 	Thrid `int` is the error code indicating the calling is successful or the failed reasons.
 
 + `out List<long> p2pList`
@@ -876,7 +876,7 @@ Parameters:
 
 	Callabck for async method.  
 	First `List<long>` is uids list which have chat sessions with current user;  
-	Second `List<long>` is group ids list which members including current user.
+	Second `List<long>` is group ids list which members including current user.  
 	Thrid `int` is the error code indicating the calling is successful or the failed reasons.
 
 + `out List<long> p2pList`
@@ -979,6 +979,10 @@ Parameters:
 	Callabck for async method.  
 	First `RetrievedMessage` is retrieved data, please refer [RetrievedMessage](Structures.md#RetrievedMessage);  
 	Second `int` is the error code indicating the calling is successful or the failed reasons.
+
++ `out RetrievedMessage retrievedMessage`
+
+	The retrieved data, please refer [RetrievedMessage](Structures.md#RetrievedMessage).
 
 + `long xid`
 
