@@ -129,7 +129,6 @@ Please refer: [API docs](doc/API.md)
 
 ## Directory structure
 
-### C# Version
 
 * **\<rtm-client-sdk-csharp\>/com.fpnn**
 
@@ -144,37 +143,5 @@ Please refer: [API docs](doc/API.md)
 	Examples codes for using RTM SDK.
 
 * **\<rtm-client-sdk-csharp\>/doc**
-
-	API documents in markdown format.
-
-### Unity Version
-
-* **\<rtm-client-sdk-unity\>/Assets/Plugins/fpnn**
-
-	Codes of FPNN SDK.
-
-* **\<rtm-client-sdk-unity\>/Assets/Plugins/rtm**
-
-	Codes of RTM SDK.
-
-* **\<rtm-client-sdk-unity\>/Assets/Examples**
-
-	Examples codes for using RTM SDK.
-
-* **\<rtm-client-sdk-unity\>/Assets/**
-
-	* Main.cs:
-
-		Entery of all examples.
-
-	* ErrorRecorder.cs:
-
-		Demo implementation of com.fpnn.common.ErrorRecorder for all examples.
-
-	* RTMExampleQuestProcessor.cs:
-
-		Demo implementation of com.fpnn.rtm.IRTMQuestProcessor for all examples.
-
-* **\<rtm-client-sdk-unity\>/doc**
 
 	API documents in markdown format.
