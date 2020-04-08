@@ -286,7 +286,7 @@ namespace com.fpnn.rtm
 
             if (mtypes != null)
                 quest.Param("mtypes", mtypes);
-            
+
             return client.SendQuest(quest, (Answer answer, int errorCode) => {
 
                 if (errorCode == fpnn.ErrorCode.FPNN_EC_OK)
@@ -303,8 +303,8 @@ namespace com.fpnn.rtm
                     }
                     callback(result.count, result.lastId, result.beginMsec, result.endMsec, result.messages, errorCode);
                 }
-                
-                callback(0, 0, 0, 0, null, errorCode);
+                else
+                    callback(0, 0, 0, 0, null, errorCode);
             }, timeout);
         }
 
@@ -378,8 +378,8 @@ namespace com.fpnn.rtm
                     }
                     callback(result.count, result.lastId, result.beginMsec, result.endMsec, result.messages, errorCode);
                 }
-
-                callback(0, 0, 0, 0, null, errorCode);
+                else
+                    callback(0, 0, 0, 0, null, errorCode);
             }, timeout);
         }
 
@@ -452,8 +452,8 @@ namespace com.fpnn.rtm
                     }
                     callback(result.count, result.lastId, result.beginMsec, result.endMsec, result.messages, errorCode);
                 }
-
-                callback(0, 0, 0, 0, null, errorCode);
+                else
+                    callback(0, 0, 0, 0, null, errorCode);
             }, timeout);
         }
 
@@ -527,8 +527,8 @@ namespace com.fpnn.rtm
                     }
                     callback(result.count, result.lastId, result.beginMsec, result.endMsec, result.messages, errorCode);
                 }
-
-                callback(0, 0, 0, 0, null, errorCode);
+                else
+                    callback(0, 0, 0, 0, null, errorCode);
             }, timeout);
         }
 
