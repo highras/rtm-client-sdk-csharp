@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using com.fpnn.rtm;
 
 namespace Histories
@@ -30,7 +31,7 @@ namespace Histories
 
             if (client == null)
                 return;
-
+            
             EnterRoom(client, roomId);
 
             int fetchCount = 100;
@@ -50,9 +51,13 @@ namespace Histories
             Console.WriteLine("\n================[ Get P2P Chat {0} items ]==================", fetchCount);
             GetP2PChatInSync(client, peerUid, fetchCount);
 
-            Console.WriteLine("\n================[ Get Group Chat {0} items ]==================", fetchCount);
+            Console.WriteLine("\n================[ Get Group Chat {0} items (sync) ]==================", fetchCount);
             GetGroupChatInSync(client, groupId, fetchCount);
-
+            
+            Console.WriteLine("\n================[ Get Group Chat {0} items (async) ]==================", fetchCount);
+            GetGroupChatInASync(client, groupId, fetchCount);
+            Thread.Sleep(3000);
+            
             Console.WriteLine("\n================[ Get Room Chat {0} items ]==================", fetchCount);
             GetRoomChatInSync(client, roomId, fetchCount);
 
@@ -298,6 +303,61 @@ namespace Histories
             }
 
             Console.WriteLine("Get group history chat total fetched {0} items", fetchedCount);
+        }
+
+        internal class InfoPackage
+        {
+            public bool desc = true;
+            public long beginMsec = 0;
+            public long endMsec = 0;
+            public long lastId = 0;
+            public int fetchedCount = 0;
+            public int count;
+        }
+
+        static void GetGroupChatInASync(RTMClient client, long groupId, int count, InfoPackage info = null)
+        {
+            const int countLimitation = 10;
+            if (info == null)
+            {
+                info = new InfoPackage();
+                info.count = count;
+            }
+
+            bool status = client.GetGroupChat((int gotCount, long lastId, long beginMsec, long endMsec, List<HistoryMessage> messages, int errorCode) =>
+            {
+                if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
+                {
+                    info.beginMsec = beginMsec;
+                    info.endMsec = endMsec;
+                    info.lastId = lastId;
+                    info.beginMsec = beginMsec;
+                    info.fetchedCount += gotCount;
+                    info.count -= gotCount;
+
+                    DisplayHistoryMessages(messages);
+
+                    if (gotCount == countLimitation && info.count > 0)
+                    {
+                        GetGroupChatInASync(client, groupId, info.count, info);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Get group history chat in group {0} in async completed. Fetched {1} items.",
+                            groupId, info.fetchedCount);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Fetch group history chat in group {0} in async failed. Fetched {1} items, error code: {2}",
+                        groupId, info.fetchedCount, errorCode);
+                }
+            }, groupId, info.desc, countLimitation, info.beginMsec, info.endMsec, info.lastId);
+
+            if (status == false)
+            {
+                Console.WriteLine("Start fetch group history chat in group {0} in async failed.", groupId);
+            }
         }
 
         static void GetRoomChatInSync(RTMClient client, long roomId, int count)
