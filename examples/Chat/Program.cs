@@ -54,7 +54,7 @@ namespace Chat
                 SendRoomCmdInSync(client, roomId);
             }
 
-            Console.WriteLine("Wait 10 seonds for receiving server pushed Chat & Cmd if those are being demoed ...");
+            Console.WriteLine("Wait 30 seonds for receiving server pushed Chat & Cmd if those are being demoed ...");
             Thread.Sleep(30 * 1000);
         }
 

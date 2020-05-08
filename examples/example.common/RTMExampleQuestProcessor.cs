@@ -83,53 +83,28 @@ namespace example.common
                     fromUid, mtype, mid, attrs, message.Length);
         }
 
-        public void PushChat(long fromUid, long toUid, long mid, string message, string attrs, long mtime)
-        {
-            lock (this)
-                Console.WriteLine("Receive push chat: from {0}, mid: {1}, attrs: {2}, message: {3}",
-                    fromUid, mid, attrs, message);
-        }
-        public void PushGroupChat(long fromUid, long groupId, long mid, string message, string attrs, long mtime)
-        {
-            lock (this)
-                Console.WriteLine("Receive push group chat: from {0},in group {4}, mid: {1}, attrs: {2}, message: {3}",
-                    fromUid, mid, attrs, message, groupId);
-        }
-        public void PushRoomChat(long fromUid, long roomId, long mid, string message, string attrs, long mtime)
-        {
-            lock (this)
-                Console.WriteLine("Receive push room chat: from {0},in room {4}, mid: {1}, attrs: {2}, message: {3}",
-                    fromUid, mid, attrs, message, roomId);
-        }
-        public void PushBroadcastChat(long fromUid, long mid, string message, string attrs, long mtime)
-        {
-            lock (this)
-                Console.WriteLine("Receive push broadcast chat: from {0}, mid: {1}, attrs: {2}, message: {3}",
-                    fromUid, mid, attrs, message);
-        }
-
         public void PushChat(long fromUid, long toUid, long mid, com.fpnn.rtm.TranslatedMessage message, string attrs, long mtime)
         {
             lock (this)
-                Console.WriteLine("Receive push translated chat: from {0}, mid: {1}, attrs: {2}, from {3} {4} to {5} {6}",
+                Console.WriteLine("Receive push chat: from {0}, mid: {1}, attrs: {2}, from language {3} content {4} to language {5} content {6}",
                     fromUid, mid, attrs, message.source, message.sourceText, message.target, message.targetText);
         }
         public void PushGroupChat(long fromUid, long groupId, long mid, com.fpnn.rtm.TranslatedMessage message, string attrs, long mtime)
         {
             lock (this)
-                Console.WriteLine("Receive push translated group chat: from {0}, in group {7}, mid: {1}, attrs: {2}, from {3} {4} to {5} {6}",
+                Console.WriteLine("Receive push group chat: from {0}, in group {7}, mid: {1}, attrs: {2}, from language {3} content {4} to language {5} content {6}",
                     fromUid, mid, attrs, message.source, message.sourceText, message.target, message.targetText, groupId);
         }
         public void PushRoomChat(long fromUid, long roomId, long mid, com.fpnn.rtm.TranslatedMessage message, string attrs, long mtime)
         {
             lock (this)
-                Console.WriteLine("Receive push translated room chat: from {0}, in room {7}, mid: {1}, attrs: {2}, from {3} {4} to {5} {6}",
+                Console.WriteLine("Receive push room chat: from {0}, in room {7}, mid: {1}, attrs: {2}, from language {3} content {4} to language {5} content {6}",
                     fromUid, mid, attrs, message.source, message.sourceText, message.target, message.targetText, roomId);
         }
         public void PushBroadcastChat(long fromUid, long mid, com.fpnn.rtm.TranslatedMessage message, string attrs, long mtime)
         {
             lock (this)
-                Console.WriteLine("Receive push translated broadcast chat: from {0}, mid: {1}, attrs: {2}, from {3} {4} to {5} {6}",
+                Console.WriteLine("Receive push broadcast chat: from {0}, mid: {1}, attrs: {2}, from language {3} content {4} to language {5} content {6}",
                     fromUid, mid, attrs, message.source, message.sourceText, message.target, message.targetText);
         }
 
