@@ -36,6 +36,19 @@ namespace Friends
             System.Threading.Thread.Sleep(2000);   //-- Wait for server sync action.
 
             GetFriends(client);
+
+            //-- Blacklist
+            AddBlacklist(client, new HashSet<long>() { 123456, 234567, 345678, 456789 });
+
+            GetBlacklist(client);
+
+            DeleteBlacklist(client, new HashSet<long>() { 234567, 345678 });
+
+            GetBlacklist(client);
+
+            DeleteBlacklist(client, new HashSet<long>() { 123456, 234567, 345678, 456789 });
+
+            GetBlacklist(client);
         }
 
         static void ManualInitForTesting()
@@ -64,6 +77,7 @@ namespace Friends
             }
         }
 
+        //------------------------[ Friend Operations ]-------------------------//
         static void AddFriends(RTMClient client, HashSet<long> uids)
         {
             int errorCode = client.AddFriends(uids);
@@ -95,6 +109,41 @@ namespace Friends
                 Console.WriteLine("Get friends in sync success");
                 foreach (long uid in uids)
                     Console.WriteLine("-- Friend uid: " + uid);
+            }
+        }
+
+        //------------------------[ Blacklist Operations ]-------------------------//
+        static void AddBlacklist(RTMClient client, HashSet<long> uids)
+        {
+            int errorCode = client.AddBlacklist(uids);
+
+            if (errorCode != com.fpnn.ErrorCode.FPNN_EC_OK)
+                Console.WriteLine("Add users to blacklist in sync failed, error code is {0}.", errorCode);
+            else
+                Console.WriteLine("Add users to blacklist in sync success");
+        }
+
+        static void DeleteBlacklist(RTMClient client, HashSet<long> uids)
+        {
+            int errorCode = client.DeleteBlacklist(uids);
+
+            if (errorCode != com.fpnn.ErrorCode.FPNN_EC_OK)
+                Console.WriteLine("Delete from blacklist in sync failed, error code is {0}.", errorCode);
+            else
+                Console.WriteLine("Delete from blacklist in sync success");
+        }
+
+        static void GetBlacklist(RTMClient client)
+        {
+            int errorCode = client.GetBlacklist(out HashSet<long> uids);
+
+            if (errorCode != com.fpnn.ErrorCode.FPNN_EC_OK)
+                Console.WriteLine("Get blacklist in sync failed, error code is {0}.", errorCode);
+            else
+            {
+                Console.WriteLine("Get blacklist in sync success");
+                foreach (long uid in uids)
+                    Console.WriteLine("-- blocked uid: " + uid);
             }
         }
     }
