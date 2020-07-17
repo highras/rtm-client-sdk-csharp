@@ -71,7 +71,7 @@ namespace com.fpnn.rtm
         {
             try
             {
-                Dictionary<string, object> jsonData = common.Json.Parse(json);
+                Dictionary<string, object> jsonData = common.Json.ParseObject(json);
 
                 AudioInfo audioInfo = new AudioInfo();
 
