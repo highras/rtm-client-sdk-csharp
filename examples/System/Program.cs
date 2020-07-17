@@ -16,9 +16,9 @@ namespace Messages
             RTMControlCenter.Init(config);
         }
 
-        static RTMClient LoginRTM(string rtmEndpoint, long pid, long uid, string token)
+        static RTMClient LoginRTM(string rtmEndpoint, long projectId, long uid, string token)
         {
-            RTMClient client = new RTMClient(rtmEndpoint, pid, uid, new example.common.RTMExampleQuestProcessor());
+            RTMClient client = new RTMClient(rtmEndpoint, projectId, uid, new example.common.RTMExampleQuestProcessor());
 
             int errorCode = client.Login(out bool ok, token, new Dictionary<string, string>() {
                 { "attr1", "demo 123" },
@@ -86,11 +86,11 @@ namespace Messages
             // ManualInitForTesting();
 
             string rtmEndpoint = args[0];
-            long pid = Int64.Parse(args[1]);
+            long projectId = Int64.Parse(args[1]);
             long uid = Int64.Parse(args[2]);
             string token = args[3];
 
-            RTMClient client = LoginRTM(rtmEndpoint, pid, uid, token);
+            RTMClient client = LoginRTM(rtmEndpoint, projectId, uid, token);
 
             if (client == null)
                 return;

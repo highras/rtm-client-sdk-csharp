@@ -23,11 +23,11 @@ namespace Histories
             // ManualInitForTesting();
 
             string rtmEndpoint = args[0];
-            long pid = Int64.Parse(args[1]);
+            long projectId = Int64.Parse(args[1]);
             long uid = Int64.Parse(args[2]);
             string token = args[3];
 
-            RTMClient client = LoginRTM(rtmEndpoint, pid, uid, token);
+            RTMClient client = LoginRTM(rtmEndpoint, projectId, uid, token);
 
             if (client == null)
                 return;
@@ -74,9 +74,9 @@ namespace Histories
             RTMControlCenter.Init(config);
         }
 
-        static RTMClient LoginRTM(string rtmEndpoint, long pid, long uid, string token)
+        static RTMClient LoginRTM(string rtmEndpoint, long projectId, long uid, string token)
         {
-            RTMClient client = new RTMClient(rtmEndpoint, pid, uid, new example.common.RTMExampleQuestProcessor());
+            RTMClient client = new RTMClient(rtmEndpoint, projectId, uid, new example.common.RTMExampleQuestProcessor());
 
             int errorCode = client.Login(out bool ok, token);
             if (ok)
@@ -110,10 +110,10 @@ namespace Histories
             {
                 if (hm.binaryMessage != null)
                     Console.WriteLine("-- Fetched: ID: {0}, from {1}, mtype {2}, mid {3}, binary message length {4}, attrs {5}, mtime {6}",
-                        hm.id, hm.fromUid, hm.mtype, hm.mid, hm.binaryMessage.Length, hm.attrs, hm.mtime);
+                        hm.cursorId, hm.fromUid, hm.messageType, hm.messageId, hm.binaryMessage.Length, hm.attrs, hm.modifiedTime);
                 else
                     Console.WriteLine("-- Fetched: ID: {0}, from {1}, mtype {2}, mid {3}, message {4}, attrs {5}, mtime {6}",
-                        hm.id, hm.fromUid, hm.mtype, hm.mid, hm.stringMessage, hm.attrs, hm.mtime);
+                        hm.cursorId, hm.fromUid, hm.messageType, hm.messageId, hm.stringMessage, hm.attrs, hm.modifiedTime);
             }
         }
 
@@ -143,7 +143,7 @@ namespace Histories
 
                 beginMsec = result.beginMsec;
                 endMsec = result.endMsec;
-                lastId = result.lastId;
+                lastId = result.lastCursorId;
             }
 
             Console.WriteLine("Get P2P history message total fetched {0} items", fetchedCount);
@@ -174,7 +174,7 @@ namespace Histories
 
                 beginMsec = result.beginMsec;
                 endMsec = result.endMsec;
-                lastId = result.lastId;
+                lastId = result.lastCursorId;
             }
 
             Console.WriteLine("Get group history message total fetched {0} items", fetchedCount);
@@ -205,7 +205,7 @@ namespace Histories
 
                 beginMsec = result.beginMsec;
                 endMsec = result.endMsec;
-                lastId = result.lastId;
+                lastId = result.lastCursorId;
             }
 
             Console.WriteLine("Get room history message total fetched {0} items", fetchedCount);
@@ -236,7 +236,7 @@ namespace Histories
 
                 beginMsec = result.beginMsec;
                 endMsec = result.endMsec;
-                lastId = result.lastId;
+                lastId = result.lastCursorId;
             }
 
             Console.WriteLine("Get broadcast history message total fetched {0} items", fetchedCount);
@@ -268,7 +268,7 @@ namespace Histories
 
                 beginMsec = result.beginMsec;
                 endMsec = result.endMsec;
-                lastId = result.lastId;
+                lastId = result.lastCursorId;
             }
 
             Console.WriteLine("Get P2P history chat total fetched {0} items", fetchedCount);
@@ -299,7 +299,7 @@ namespace Histories
 
                 beginMsec = result.beginMsec;
                 endMsec = result.endMsec;
-                lastId = result.lastId;
+                lastId = result.lastCursorId;
             }
 
             Console.WriteLine("Get group history chat total fetched {0} items", fetchedCount);
@@ -385,7 +385,7 @@ namespace Histories
 
                 beginMsec = result.beginMsec;
                 endMsec = result.endMsec;
-                lastId = result.lastId;
+                lastId = result.lastCursorId;
             }
 
             Console.WriteLine("Get room history chat total fetched {0} items", fetchedCount);
@@ -416,7 +416,7 @@ namespace Histories
 
                 beginMsec = result.beginMsec;
                 endMsec = result.endMsec;
-                lastId = result.lastId;
+                lastId = result.lastCursorId;
             }
 
             Console.WriteLine("Get broadcast history chat total fetched {0} items", fetchedCount);
