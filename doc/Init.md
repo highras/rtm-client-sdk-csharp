@@ -88,3 +88,11 @@
 * RTMConfig.defaultErrorRecorder
 
 	Instance of com.fpnn.common.ErrorRecoder implemented. Default is null.
+
+* RTMConfig.forceTriggerCallbackWhenAsyncMethodReturnFalse
+
+	When connection broken, the async calling will start failed.  
+	If the parameter set false, the async interface will return false without calling the callback in failed status;  
+	If the parameter set true, the async interface will trigger the callback in failed status when the false return.
+
+	the default value is `false`.
