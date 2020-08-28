@@ -96,3 +96,15 @@
 	If the parameter set true, the async interface will trigger the callback in failed status when the false return.
 
 	the default value is `false`.
+
+* RTMConfig.regressiveStrategy.startConnectFailedCount
+
+	How many failed connecting times before triggering the regressive reconnecting strategy.
+
+* RTMConfig.regressiveStrategy.maxIntervalSeconds
+
+	Max interval seconds between last failed relogin and next relogin starting when regressive reconnecting strategy acvived.
+
+* RTMConfig.regressiveStrategy.linearRegressiveCount
+
+	Count of the relogin interval seconds increasing to the max value when regressive reconnecting strategy acvived.
