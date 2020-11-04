@@ -58,6 +58,10 @@ namespace Users
                 return;
 
             GetUserInfos(client);
+
+            GetUsersInfos(client, new HashSet<long>() { 99688848, 123456, 234567, 345678, 456789 });
+
+            Console.WriteLine("======== Test done =========");
         }
 
         static void ManualInitForTesting()
@@ -122,6 +126,20 @@ namespace Users
                 Console.WriteLine("Get user infos in sync successed.");
                 Console.WriteLine("Public info: {0}", publicInfos ?? "null");
                 Console.WriteLine("Private info: {0}", privateInfos ?? "null");
+            }
+        }
+
+        static void GetUsersInfos(RTMClient client, HashSet<long> uids)
+        {
+            int errorCode = client.GetUserPublicInfo(out Dictionary<string, string> publicInfos, uids);
+
+            if (errorCode != com.fpnn.ErrorCode.FPNN_EC_OK)
+                Console.WriteLine("Get users' info in sync failed, error code is {0}.", errorCode);
+            else
+            {
+                Console.WriteLine("Get users' info in sync success");
+                foreach (var kvp in publicInfos)
+                    Console.WriteLine("-- uid: " + kvp.Key + " info: [" + kvp.Value + "]");
             }
         }
     }

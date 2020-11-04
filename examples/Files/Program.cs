@@ -87,9 +87,9 @@ namespace Files
         //--------------[ Send files Demo ]---------------------//
         static void SendP2PFileInAsync(RTMClient client, long peerUid, MessageType type)
         {
-            bool status = client.SendFile((long mtime, int errorCode) => {
+            bool status = client.SendFile((long messageId, int errorCode) => {
                 if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                    Console.WriteLine("Send file to user {0} in async successed, mtime is {1}.", peerUid, mtime);
+                    Console.WriteLine("Send file to user {0} in async successed, messageId is {1}.", peerUid, messageId);
                 else
                     Console.WriteLine("Send text message to user {0} in async failed, errorCode is {1}.", peerUid, errorCode);
             }, peerUid, type, fileContent, filename);
@@ -102,19 +102,19 @@ namespace Files
 
         static void SendP2PFileInSync(RTMClient client, long peerUid, MessageType type)
         {
-            int errorCode = client.SendFile(out long mtime, peerUid, type, fileContent, filename);
+            int errorCode = client.SendFile(out long messageId, peerUid, type, fileContent, filename);
 
             if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                Console.WriteLine("Send file to user {0} in sync successed, mtime is {1}.", peerUid, mtime);
+                Console.WriteLine("Send file to user {0} in sync successed, messageId is {1}.", peerUid, messageId);
             else
                 Console.WriteLine("Send file to user {0} in sync failed, error code {1}.", peerUid, errorCode);
         }
 
         static void SendGroupFileInAsync(RTMClient client, long groupId, MessageType type)
         {
-            bool status = client.SendGroupFile((long mtime, int errorCode) => {
+            bool status = client.SendGroupFile((long messageId, int errorCode) => {
                 if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                    Console.WriteLine("Send file to group {0} in async successed, mtime is {1}.", groupId, mtime);
+                    Console.WriteLine("Send file to group {0} in async successed, messageId is {1}.", groupId, messageId);
                 else
                     Console.WriteLine("Send file to group {0} in async failed, errorCode is {1}.", groupId, errorCode);
             }, groupId, type, fileContent, filename);
@@ -127,19 +127,19 @@ namespace Files
 
         static void SendGroupFileInSync(RTMClient client, long groupId, MessageType type)
         {
-            int errorCode = client.SendGroupFile(out long mtime, groupId, type, fileContent, filename);
+            int errorCode = client.SendGroupFile(out long messageId, groupId, type, fileContent, filename);
 
             if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                Console.WriteLine("Send file to group {0} in sync successed, mtime is {1}.", groupId, mtime);
+                Console.WriteLine("Send file to group {0} in sync successed, messageId is {1}.", groupId, messageId);
             else
                 Console.WriteLine("Send file to group {0} in sync failed, error code {1}.", groupId, errorCode);
         }
 
         static void SendRoomFileInAsync(RTMClient client, long roomId, MessageType type)
         {
-            bool status = client.SendRoomFile((long mtime, int errorCode) => {
+            bool status = client.SendRoomFile((long messageId, int errorCode) => {
                 if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                    Console.WriteLine("Send file to room {0} in async successed, mtime is {1}.", roomId, mtime);
+                    Console.WriteLine("Send file to room {0} in async successed, messageId is {1}.", roomId, messageId);
                 else
                     Console.WriteLine("Send file to room {0} in async failed, errorCode is {1}.", roomId, errorCode);
             }, roomId, type, fileContent, filename);
@@ -152,10 +152,10 @@ namespace Files
 
         static void SendRoomFileInSync(RTMClient client, long roomId, MessageType type)
         {
-            int errorCode = client.SendRoomFile(out long mtime, roomId, type, fileContent, filename);
+            int errorCode = client.SendRoomFile(out long messageId, roomId, type, fileContent, filename);
 
             if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                Console.WriteLine("Send file to room {0} in sync successed, mtime is {1}.", roomId, mtime);
+                Console.WriteLine("Send file to room {0} in sync successed, messageId is {1}.", roomId, messageId);
             else
                 Console.WriteLine("Send file to room {0} in sync failed, error code {1}.", roomId, errorCode);
         }

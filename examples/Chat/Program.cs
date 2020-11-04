@@ -32,7 +32,7 @@ namespace Chat
 
             if (client == null)
                 return;
-
+            
             SendP2PChatInAsync(client, peerUid);
             SendP2PChatInSync(client, peerUid);
 
@@ -56,6 +56,16 @@ namespace Chat
 
             Console.WriteLine("Wait 30 seonds for receiving server pushed Chat & Cmd if those are being demoed ...");
             Thread.Sleep(30 * 1000);
+
+            TextAudit(client, "sdaada asdasd asdasd asdas dds");
+            TextAudit(client, "ssds 他妈的， 去你妈逼，操你妈的");
+            TextAudit(client, "sdaada fuck you mother dds");
+
+            ImageAudit(client, "https://box.bdimg.com/static/fisp_static/common/img/searchbox/logo_news_276_88_1f9876a.png");
+            AudioAudit(client, "https://opus-codec.org/static/examples/samples/speech_orig.wav");
+            VideoAudit(client, "http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4");
+
+            Console.WriteLine("======== Test done =========");
         }
 
         static void ManualInitForTesting()
@@ -99,9 +109,9 @@ namespace Chat
         //------------------------[ Chat Demo ]-------------------------//
         static void SendP2PChatInAsync(RTMClient client, long peerUid)
         {
-            bool status = client.SendChat((long mtime, int errorCode) => {
+            bool status = client.SendChat((long messageId, int errorCode) => {
                 if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                    Console.WriteLine("Send chat message to user {0} in sync successed, mtime is {1}.", peerUid, mtime);
+                    Console.WriteLine("Send chat message to user {0} in sync successed, messageId is {1}.", peerUid, messageId);
                 else
                     Console.WriteLine("Send chat message to user {0} in sync failed, errorCode is {1}.", peerUid, errorCode);
             }, peerUid, textMessage);
@@ -114,19 +124,19 @@ namespace Chat
 
         static void SendP2PChatInSync(RTMClient client, long peerUid)
         {
-            int errorCode = client.SendChat(out long mtime, peerUid, textMessage);
+            int errorCode = client.SendChat(out long messageId, peerUid, textMessage);
 
             if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                Console.WriteLine("Send chat message to user {0} in sync successed, mtime is {1}.", peerUid, mtime);
+                Console.WriteLine("Send chat message to user {0} in sync successed, messageId is {1}.", peerUid, messageId);
             else
                 Console.WriteLine("Send chat message to user {0} in sync failed.", peerUid);
         }
 
         static void SendGroupChatInAsync(RTMClient client, long groupId)
         {
-            bool status = client.SendGroupChat((long mtime, int errorCode) => {
+            bool status = client.SendGroupChat((long messageId, int errorCode) => {
                 if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                    Console.WriteLine("Send chat message to group {0} in sync successed, mtime is {1}.", groupId, mtime);
+                    Console.WriteLine("Send chat message to group {0} in sync successed, messageId is {1}.", groupId, messageId);
                 else
                     Console.WriteLine("Send chat message to group {0} in sync failed, errorCode is {1}.", groupId, errorCode);
             }, groupId, textMessage);
@@ -139,19 +149,19 @@ namespace Chat
 
         static void SendGroupChatInSync(RTMClient client, long groupId)
         {
-            int errorCode = client.SendGroupChat(out long mtime, groupId, textMessage);
+            int errorCode = client.SendGroupChat(out long messageId, groupId, textMessage);
 
             if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                Console.WriteLine("Send chat message to group {0} in sync successed, mtime is {1}.", groupId, mtime);
+                Console.WriteLine("Send chat message to group {0} in sync successed, messageId is {1}.", groupId, messageId);
             else
                 Console.WriteLine("Send chat message to group {0} in sync failed.", groupId);
         }
 
         static void SendRoomChatInAsync(RTMClient client, long roomId)
         {
-            bool status = client.SendRoomChat((long mtime, int errorCode) => {
+            bool status = client.SendRoomChat((long messageId, int errorCode) => {
                 if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                    Console.WriteLine("Send chat message to room {0} in sync successed, mtime is {1}.", roomId, mtime);
+                    Console.WriteLine("Send chat message to room {0} in sync successed, messageId is {1}.", roomId, messageId);
                 else
                     Console.WriteLine("Send chat message to room {0} in sync failed, errorCode is {1}.", roomId, errorCode);
             }, roomId, textMessage);
@@ -164,11 +174,11 @@ namespace Chat
 
         static void SendRoomChatInSync(RTMClient client, long roomId)
         {
-            long mtime;
-            int errorCode = client.SendRoomChat(out mtime, roomId, textMessage);
+            long messageId;
+            int errorCode = client.SendRoomChat(out messageId, roomId, textMessage);
 
             if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                Console.WriteLine("Send chat message to room {0} in sync successed, mtime is {1}.", roomId, mtime);
+                Console.WriteLine("Send chat message to room {0} in sync successed, messageId is {1}.", roomId, messageId);
             else
                 Console.WriteLine("Send chat message to room {0} in sync failed.", roomId);
         }
@@ -176,9 +186,9 @@ namespace Chat
         //------------------------[ Cmd Demo ]-------------------------//
         static void SendP2PCmdInAsync(RTMClient client, long peerUid)
         {
-            bool status = client.SendCmd((long mtime, int errorCode) => {
+            bool status = client.SendCmd((long messageId, int errorCode) => {
                 if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                    Console.WriteLine("Send cmd message to user {0} in sync successed, mtime is {1}.", peerUid, mtime);
+                    Console.WriteLine("Send cmd message to user {0} in sync successed, messageId is {1}.", peerUid, messageId);
                 else
                     Console.WriteLine("Send cmd message to user {0} in sync failed, errorCode is {1}.", peerUid, errorCode);
             }, peerUid, textMessage);
@@ -191,19 +201,19 @@ namespace Chat
 
         static void SendP2PCmdInSync(RTMClient client, long peerUid)
         {
-            int errorCode = client.SendCmd(out long mtime, peerUid, textMessage);
+            int errorCode = client.SendCmd(out long messageId, peerUid, textMessage);
 
             if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                Console.WriteLine("Send cmd message to user {0} in sync successed, mtime is {1}.", peerUid, mtime);
+                Console.WriteLine("Send cmd message to user {0} in sync successed, messageId is {1}.", peerUid, messageId);
             else
                 Console.WriteLine("Send cmd message to user {0} in sync failed.", peerUid);
         }
 
         static void SendGroupCmdInAsync(RTMClient client, long groupId)
         {
-            bool status = client.SendGroupCmd((long mtime, int errorCode) => {
+            bool status = client.SendGroupCmd((long messageId, int errorCode) => {
                 if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                    Console.WriteLine("Send cmd message to group {0} in sync successed, mtime is {1}.", groupId, mtime);
+                    Console.WriteLine("Send cmd message to group {0} in sync successed, messageId is {1}.", groupId, messageId);
                 else
                     Console.WriteLine("Send cmd message to group {0} in sync failed, errorCode is {1}.", groupId, errorCode);
             }, groupId, textMessage);
@@ -216,19 +226,19 @@ namespace Chat
 
         static void SendGroupCmdInSync(RTMClient client, long groupId)
         {
-            int errorCode = client.SendGroupCmd(out long mtime, groupId, textMessage);
+            int errorCode = client.SendGroupCmd(out long messageId, groupId, textMessage);
 
             if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                Console.WriteLine("Send cmd message to group {0} in sync successed, mtime is {1}.", groupId, mtime);
+                Console.WriteLine("Send cmd message to group {0} in sync successed, messageId is {1}.", groupId, messageId);
             else
                 Console.WriteLine("Send cmd message to group {0} in sync failed.", groupId);
         }
 
         static void SendRoomCmdInAsync(RTMClient client, long roomId)
         {
-            bool status = client.SendRoomCmd((long mtime, int errorCode) => {
+            bool status = client.SendRoomCmd((long messageId, int errorCode) => {
                 if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                    Console.WriteLine("Send cmd message to room {0} in sync successed, mtime is {1}.", roomId, mtime);
+                    Console.WriteLine("Send cmd message to room {0} in sync successed, messageId is {1}.", roomId, messageId);
                 else
                     Console.WriteLine("Send cmd message to room {0} in sync failed, errorCode is {1}.", roomId, errorCode);
             }, roomId, textMessage);
@@ -241,13 +251,74 @@ namespace Chat
 
         static void SendRoomCmdInSync(RTMClient client, long roomId)
         {
-            long mtime;
-            int errorCode = client.SendRoomCmd(out mtime, roomId, textMessage);
+            long messageId;
+            int errorCode = client.SendRoomCmd(out messageId, roomId, textMessage);
 
             if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                Console.WriteLine("Send cmd message to room {0} in sync successed, mtime is {1}.", roomId, mtime);
+                Console.WriteLine("Send cmd message to room {0} in sync successed, messageId is {1}.", roomId, messageId);
             else
                 Console.WriteLine("Send cmd message to room {0} in sync failed.", roomId);
+        }
+
+        //------------------------[ Text Image Audio Vedio Audit ]-------------------------//
+        static void TextAudit(RTMClient client, string text)
+        {
+            int errorCode = client.TextCheck(out TextCheckResult result, text);
+            if (errorCode != com.fpnn.ErrorCode.FPNN_EC_OK)
+                Console.WriteLine("TextCheck in sync failed, error " + errorCode);
+            else
+            {
+                Console.WriteLine("TextCheck in sync successed");
+                Console.WriteLine("  -- result " + result.result);
+                Console.WriteLine("  -- text " + result.text);
+
+                if (result.tags != null)
+                    Console.WriteLine("  -- tags.Count " + result.tags.Count);
+                if (result.wlist != null)
+                    Console.WriteLine("  -- wlist.Count " + result.wlist.Count);
+            }
+        }
+
+        static void ImageAudit(RTMClient client, string url)
+        {
+            int errorCode = client.ImageCheck(out CheckResult result,url);
+            if (errorCode != com.fpnn.ErrorCode.FPNN_EC_OK)
+                Console.WriteLine("ImageCheck in sync failed, error " + errorCode);
+            else
+            {
+                Console.WriteLine("ImageCheck in sync successed");
+                Console.WriteLine("  -- result " + result.result);
+                if (result.tags != null)
+                    Console.WriteLine("  -- tags.Count " + result.tags.Count);
+            }
+        }
+
+        static void AudioAudit(RTMClient client, string url)
+        {
+            int errorCode = client.AudioCheck(out CheckResult result, url, "zh-CN");
+            if (errorCode != com.fpnn.ErrorCode.FPNN_EC_OK)
+                Console.WriteLine("AudioCheck in sync failed, error " + errorCode);
+            else
+            {
+                Console.WriteLine("AudioCheck in sync successed");
+                Console.WriteLine("  -- result " + result.result);
+                if (result.tags != null)
+                    Console.WriteLine("  -- tags.Count " + result.tags.Count);
+            }
+        }
+
+        static void VideoAudit(RTMClient client, string url)
+        {
+            int errorCode = client.VideoCheck(out CheckResult result, url, "testVideo");
+            if (errorCode != com.fpnn.ErrorCode.FPNN_EC_OK)
+                Console.WriteLine("VideoCheck in sync failed, error " + errorCode);
+            else
+            {
+                Console.WriteLine("VideoCheck in sync successed");
+                Console.WriteLine("  -- result " + result.result);
+                if (result.tags != null)
+                    Console.WriteLine("  -- tags.Count " + result.tags.Count);
+            }
         }
     }
 }

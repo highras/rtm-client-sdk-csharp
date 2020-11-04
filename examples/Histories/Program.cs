@@ -109,10 +109,19 @@ namespace Histories
             foreach (HistoryMessage hm in messages)
             {
                 if (hm.binaryMessage != null)
-                    Console.WriteLine("-- Fetched: ID: {0}, from {1}, mtype {2}, mid {3}, binary message length {4}, attrs {5}, mtime {6}",
+                    Console.WriteLine("-- [Binary message] Fetched: ID: {0}, from {1}, mtype {2}, mid {3}, binary message length {4}, attrs {5}, mtime {6}",
                         hm.cursorId, hm.fromUid, hm.messageType, hm.messageId, hm.binaryMessage.Length, hm.attrs, hm.modifiedTime);
+                else if (hm.messageId >= 40 && hm.messageId <= 50)
+                {
+                    if (hm.fileInfo.isRTMAudio)
+                        Console.WriteLine("-- [RTM Audio message] Fetched: ID: {0}, from {1}, mtype {2}, mid {3}, url {4}, size (5), attrs {6}, mtime {7}, language {8}, duration: {9}ms",
+                            hm.cursorId, hm.fromUid, hm.messageType, hm.messageId, hm.fileInfo.url, hm.fileInfo.size, hm.attrs, hm.modifiedTime, hm.fileInfo.language, hm.fileInfo.duration);
+                    else
+                        Console.WriteLine("-- [File message] Fetched: ID: {0}, from {1}, mtype {2}, mid {3}, url {4}, size (5), attrs {6}, mtime {7}",
+                            hm.cursorId, hm.fromUid, hm.messageType, hm.messageId, hm.fileInfo.url, hm.fileInfo.size, hm.attrs, hm.modifiedTime);
+                }
                 else
-                    Console.WriteLine("-- Fetched: ID: {0}, from {1}, mtype {2}, mid {3}, message {4}, attrs {5}, mtime {6}",
+                    Console.WriteLine("-- [String message] Fetched: ID: {0}, from {1}, mtype {2}, mid {3}, message {4}, attrs {5}, mtime {6}",
                         hm.cursorId, hm.fromUid, hm.messageType, hm.messageId, hm.stringMessage, hm.attrs, hm.modifiedTime);
             }
         }

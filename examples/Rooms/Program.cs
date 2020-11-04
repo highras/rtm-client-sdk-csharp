@@ -79,6 +79,10 @@ namespace Rooms
             EnterRoom(client, roomId);
 
             GetRoomInfos(client, roomId);
+
+            GetRoomsPublicInfo(client, new HashSet<long>() { 556677, 778899, 445566, 334455, 1234 });
+
+            Console.WriteLine("======== Test done =========");
         }
 
         static void ManualInitForTesting()
@@ -160,6 +164,20 @@ namespace Rooms
                 Console.WriteLine("Get room infos in sync successed.");
                 Console.WriteLine("Public info: {0}", publicInfos ?? "null");
                 Console.WriteLine("Private info: {0}", privateInfos ?? "null");
+            }
+        }
+
+        static void GetRoomsPublicInfo(RTMClient client, HashSet<long> roomIds)
+        {
+            int errorCode = client.GetRoomsPublicInfo(out Dictionary<string, string> publicInfos, roomIds);
+
+            if (errorCode != com.fpnn.ErrorCode.FPNN_EC_OK)
+                Console.WriteLine("Get rooms' info in sync failed, error code is {0}.", errorCode);
+            else
+            {
+                Console.WriteLine("Get rooms' info in sync success");
+                foreach (var kvp in publicInfos)
+                    Console.WriteLine("-- room id: " + kvp.Key + " info: [" + kvp.Value + "]");
             }
         }
     }

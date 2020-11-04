@@ -80,6 +80,10 @@ namespace Groups
                 return;
 
             GetGroupInfos(client, groupId);
+
+            GetGroupsPublicInfo(client, new HashSet<long>() { 223344, 334455, 445566, 667788, 778899 });
+
+            Console.WriteLine("======== Test done =========");
         }
 
         static void ManualInitForTesting()
@@ -177,6 +181,20 @@ namespace Groups
                 Console.WriteLine("Get group infos in sync successed.");
                 Console.WriteLine("Public info: {0}", publicInfos ?? "null");
                 Console.WriteLine("Private info: {0}", privateInfos ?? "null");
+            }
+        }
+
+        static void GetGroupsPublicInfo(RTMClient client, HashSet<long> groupIds)
+        {
+            int errorCode = client.GetGroupsPublicInfo(out Dictionary<string, string> publicInfos, groupIds);
+
+            if (errorCode != com.fpnn.ErrorCode.FPNN_EC_OK)
+                Console.WriteLine("Get groups' info in sync failed, error code is {0}.", errorCode);
+            else
+            {
+                Console.WriteLine("Get groups' info in sync success");
+                foreach (var kvp in publicInfos)
+                    Console.WriteLine("-- group id: " + kvp.Key + " info: [" + kvp.Value + "]");
             }
         }
     }
