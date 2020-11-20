@@ -404,6 +404,7 @@ namespace com.fpnn.rtm
         }
 
         //-- Action<TranslatedInfo, errorCode>
+        [System.Obsolete("Translate with TranslateLanguage sourceLanguage is deprecated, please using Translate with string sourceLanguage instead.")]
         public bool Translate(Action<TranslatedInfo, int> callback, string text,
             TranslateLanguage destinationLanguage, TranslateLanguage sourceLanguage = TranslateLanguage.None,
             TranslateType type = TranslateType.Chat, ProfanityType profanity = ProfanityType.Off,
@@ -414,7 +415,7 @@ namespace com.fpnn.rtm
         }
 
         //-- Action<TranslatedInfo, errorCode>
-        private bool Translate(Action<TranslatedInfo, int> callback, string text,
+        public bool Translate(Action<TranslatedInfo, int> callback, string text,
             string destinationLanguage, string sourceLanguage = "",
             TranslateType type = TranslateType.Chat, ProfanityType profanity = ProfanityType.Off,
             int timeout = 0)
@@ -481,6 +482,7 @@ namespace com.fpnn.rtm
             return asyncStarted;
         }
 
+        [System.Obsolete("Translate with TranslateLanguage sourceLanguage is deprecated, please using Translate with string sourceLanguage instead.")]
         public int Translate(out TranslatedInfo translatedinfo, string text,
             TranslateLanguage destinationLanguage, TranslateLanguage sourceLanguage = TranslateLanguage.None,
             TranslateType type = TranslateType.Chat, ProfanityType profanity = ProfanityType.Off,
@@ -490,7 +492,7 @@ namespace com.fpnn.rtm
                 GetTranslatedLanguage(sourceLanguage), type, profanity, timeout);
         }
 
-        private int Translate(out TranslatedInfo translatedinfo, string text,
+        public int Translate(out TranslatedInfo translatedinfo, string text,
             string destinationLanguage, string sourceLanguage = "",
             TranslateType type = TranslateType.Chat, ProfanityType profanity = ProfanityType.Off,
             int timeout = 0)
