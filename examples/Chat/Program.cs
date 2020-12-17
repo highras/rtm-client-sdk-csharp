@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using com.fpnn.rtm;
 
@@ -53,6 +54,9 @@ namespace Chat
                 SendRoomCmdInAsync(client, roomId);
                 SendRoomCmdInSync(client, roomId);
             }
+
+            GetP2PUnreadInSync(client, new HashSet<long> { peerUid, peerUid+1, peerUid+2 }, new HashSet<byte>{ 30, 40, 50 });
+            GetGroupUnreadInSync(client, new HashSet<long> { groupId }, new HashSet<byte> { 30, 40, 50 });
 
             Console.WriteLine("Wait 30 seonds for receiving server pushed Chat & Cmd if those are being demoed ...");
             Thread.Sleep(30 * 1000);
@@ -258,6 +262,67 @@ namespace Chat
                 Console.WriteLine("Send cmd message to room {0} in sync successed, messageId is {1}.", roomId, messageId);
             else
                 Console.WriteLine("Send cmd message to room {0} in sync failed.", roomId);
+        }
+
+        //------------------------[ Get P2P & Group Unread ]-------------------------//
+        static void GetP2PUnreadInSync(RTMClient client, HashSet<long> uids, HashSet<byte> mtypes)
+        {
+            Dictionary<long, int> unreadMap;
+            int errorCode = client.GetP2PUnread(out unreadMap, uids);
+
+            if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
+            {
+                Console.WriteLine("Fetch P2P unread in sync successful.");
+                foreach (KeyValuePair<long, int> kvp in unreadMap)
+                {
+                    Console.WriteLine($" -- peer: {kvp.Key}, unread message {kvp.Value}");
+                }
+            }
+            else
+                Console.WriteLine($"Fetch P2P unread in sync failed. Error code {errorCode}");
+
+            errorCode = client.GetP2PUnread(out unreadMap, uids, mtypes);
+
+            if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
+            {
+                Console.WriteLine("Fetch P2P unread with mTypes in sync successful.");
+                foreach (KeyValuePair<long, int> kvp in unreadMap)
+                {
+                    Console.WriteLine($" -- peer: {kvp.Key}, unread message {kvp.Value}");
+                }
+            }
+            else
+                Console.WriteLine($"Fetch P2P unread with mTypes in sync failed. Error code {errorCode}");
+        }
+
+        static void GetGroupUnreadInSync(RTMClient client, HashSet<long> groupIds, HashSet<byte> mtypes)
+        {
+            Dictionary<long, int> unreadMap;
+            int errorCode = client.GetGroupUnread(out unreadMap, groupIds);
+
+            if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
+            {
+                Console.WriteLine("Fetch group unread in sync successful.");
+                foreach (KeyValuePair<long, int> kvp in unreadMap)
+                {
+                    Console.WriteLine($" -- group: {kvp.Key}, unread message {kvp.Value}");
+                }
+            }
+            else
+                Console.WriteLine($"Fetch group unread in sync failed. Error code {errorCode}");
+
+            errorCode = client.GetGroupUnread(out unreadMap, groupIds, mtypes);
+
+            if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
+            {
+                Console.WriteLine("Fetch group unread with mTypes in sync successful.");
+                foreach (KeyValuePair<long, int> kvp in unreadMap)
+                {
+                    Console.WriteLine($" -- group: {kvp.Key}, unread message {kvp.Value}");
+                }
+            }
+            else
+                Console.WriteLine($"Fetch group unread with mTypes in sync failed. Error code {errorCode}");
         }
 
         //------------------------[ Text Image Audio Vedio Audit ]-------------------------//

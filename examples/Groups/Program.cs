@@ -186,7 +186,7 @@ namespace Groups
 
         static void GetGroupsPublicInfo(RTMClient client, HashSet<long> groupIds)
         {
-            int errorCode = client.GetGroupsPublicInfo(out Dictionary<string, string> publicInfos, groupIds);
+            int errorCode = client.GetGroupsPublicInfo(out Dictionary<long, string> publicInfos, groupIds);
 
             if (errorCode != com.fpnn.ErrorCode.FPNN_EC_OK)
                 Console.WriteLine("Get groups' info in sync failed, error code is {0}.", errorCode);
