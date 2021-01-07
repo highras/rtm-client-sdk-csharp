@@ -74,6 +74,66 @@ namespace Messages
             }
         }
 
+        static void AddDevicePushOption(RTMClient client, MessageCategory messageCategory, long targetId, HashSet<byte> mTypes = null)
+        {
+            Console.WriteLine($"===== [ AddDevicePushOption ] =======");
+
+            int errorCode = client.AddDevicePushOption(messageCategory, targetId, mTypes);
+
+            if (errorCode != com.fpnn.ErrorCode.FPNN_EC_OK)
+                Console.WriteLine("Add device push option in sync failed.");
+            else
+                Console.WriteLine("Add device push option in sync success.");
+        }
+
+        static void RemoveDevicePushOption(RTMClient client, MessageCategory messageCategory, long targetId, HashSet<byte> mTypes = null)
+        {
+            Console.WriteLine($"===== [ RemoveDevicePushOption ] =======");
+
+            int errorCode = client.RemoveDevicePushOption(messageCategory, targetId, mTypes);
+
+            if (errorCode != com.fpnn.ErrorCode.FPNN_EC_OK)
+                Console.WriteLine("Remove device push option in sync failed.");
+            else
+                Console.WriteLine("Remove device push option in sync success.");
+        }
+
+        static void PrintDevicePushOption(string categroy, Dictionary<long, HashSet<byte>> optionDictionary)
+        {
+            Console.WriteLine($"===== {categroy} has {optionDictionary.Count} items. =======");
+            foreach (KeyValuePair<long, HashSet<byte>> kvp in optionDictionary)
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                sb.Append("ID: ").Append(kvp.Key).Append(", count: ").Append(kvp.Value.Count);
+                if (kvp.Value.Count > 0)
+                {
+                    sb.Append(": {");
+                    foreach (byte mType in kvp.Value)
+                        sb.Append($" {mType},");
+
+                    sb.Append("}");
+                }
+
+                Console.WriteLine(sb);
+            }
+        }
+
+        static void GetDevicePushOption(RTMClient client)
+        {
+            Console.WriteLine($"===== [ GetDevicePushOption ] =======");
+
+            int errorCode = client.GetDevicePushOption(
+                out Dictionary<long, HashSet<byte>> p2pDictionary, out Dictionary<long, HashSet<byte>> groupDictionary);
+            if (errorCode != com.fpnn.ErrorCode.FPNN_EC_OK)
+            {
+                Console.WriteLine($"Get device push option in sync failed. error code {errorCode}");
+                return;
+            }
+
+            PrintDevicePushOption("P2P", p2pDictionary);
+            PrintDevicePushOption("Group", groupDictionary);
+        }
+
         static void Main(string[] args)
         {
             if (args.Length != 4)
@@ -97,6 +157,27 @@ namespace Messages
 
             AddAttributesDemo(client);
             GetAttributesDemo(client);
+
+            GetDevicePushOption(client);
+            AddDevicePushOption(client, MessageCategory.P2PMessage, 12345);
+            AddDevicePushOption(client, MessageCategory.GroupMessage, 223344, new HashSet<byte>());
+
+            AddDevicePushOption(client, MessageCategory.P2PMessage, 34567, null);
+            AddDevicePushOption(client, MessageCategory.GroupMessage, 445566, new HashSet<byte>() { 23, 35, 56,67 ,78, 89 });
+
+            GetDevicePushOption(client);
+
+            RemoveDevicePushOption(client, MessageCategory.GroupMessage, 223344, new HashSet<byte>() { 23, 35, 56, 67, 78, 89 });
+            RemoveDevicePushOption(client, MessageCategory.GroupMessage, 445566, new HashSet<byte>());
+            
+            GetDevicePushOption(client);
+
+            RemoveDevicePushOption(client, MessageCategory.P2PMessage, 12345);
+            RemoveDevicePushOption(client, MessageCategory.P2PMessage, 34567);
+            RemoveDevicePushOption(client, MessageCategory.GroupMessage, 223344);
+            RemoveDevicePushOption(client, MessageCategory.GroupMessage, 445566, new HashSet<byte>() { 23, 35, 56, 67, 78, 89 });
+
+            GetDevicePushOption(client);
 
             client.Bye();
             Thread.Sleep(1000);
