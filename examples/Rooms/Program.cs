@@ -85,12 +85,12 @@ namespace Rooms
 
             Console.WriteLine("======== get room members immediately =========");
 
-            GetRoomMemberCount(client, roomId);
+            GetRoomMemberCount(client, new HashSet<long>() { roomId, 778899, 445566, 334455, 1234 });
             GetRoomMembers(client, roomId);
 
             Console.WriteLine("======== get room members after 6 seconds =========");
 
-            GetRoomMemberCount(client, roomId);
+            GetRoomMemberCount(client, new HashSet<long>() { roomId, 778899, 445566, 334455, 1234 });
             GetRoomMembers(client, roomId);
 
             Console.WriteLine("======== Test done =========");
@@ -221,21 +221,29 @@ namespace Rooms
             Thread.Sleep(3 * 1000);
         }
 
-        static void GetRoomMemberCount(RTMClient client, long roomId)
+        static void GetRoomMemberCount(RTMClient client, HashSet<long> roomIds)
         {
-            int errorCode = client.GetRoomMemberCount(out int count, roomId);
+            int errorCode = client.GetRoomMemberCount(out Dictionary<long, int> counts, roomIds);
 
             if (errorCode != com.fpnn.ErrorCode.FPNN_EC_OK)
                 Console.WriteLine($"Get room members count in sync failed, error code is {errorCode}.");
             else
-                Console.WriteLine($"Get room members count in sync successful, count is {count}.");
+            {
+                Console.WriteLine("Get room members count in sync success");
+                foreach (var kvp in counts)
+                    Console.WriteLine($"-- room: {kvp.Key}, count: {kvp.Value}");
+            }
 
-            bool status = client.GetRoomMemberCount((int count, int errorCode) => {
+            bool status = client.GetRoomMemberCount((Dictionary<long, int> counts2, int errorCode) => {
                 if (errorCode == com.fpnn.ErrorCode.FPNN_EC_OK)
-                    Console.WriteLine($"Get room members count in async successful, count is {count}.");
+                {
+                    Console.WriteLine("Get room members count in async success");
+                    foreach (var kvp in counts2)
+                        Console.WriteLine($"-- room: {kvp.Key}, count: {kvp.Value}");
+                }
                 else
                     Console.WriteLine($"Get room members count in async failed, error code is {errorCode}.");
-            }, roomId);
+            }, roomIds);
             if (!status)
                 Console.WriteLine("Launch room members count in async failed.");
 
