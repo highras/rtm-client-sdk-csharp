@@ -51,27 +51,17 @@ namespace Messages
 
         static void GetAttributesDemo(RTMClient client)
         {
-            int errorCode = client.GetAttributes(out List<Dictionary<string, string>> attributes);
+            int errorCode = client.GetAttributes(out Dictionary<string, string> attributes);
             if (errorCode != com.fpnn.ErrorCode.FPNN_EC_OK)
             {
                 Console.WriteLine("Get attributes in sync failed. error code {0}", errorCode);
                 return;
             }
 
-            Console.WriteLine("Attributes has {0} dictory.", attributes.Count);
-            int dictCount = 0;
+            Console.WriteLine("Attributes has {0} items.", attributes.Count);
 
-            foreach (Dictionary<string, string> dict in attributes)
-            {
-                dictCount += 1;
-
-                Console.WriteLine("Dictory {0} has {1} items.", dictCount, dict.Count);
-
-                foreach (KeyValuePair<string, string> kvp in dict)
-                    Console.WriteLine("Key {0}, value {1}", kvp.Key, kvp.Value);
-
-                Console.WriteLine("");
-            }
+            foreach (KeyValuePair<string, string> kvp in attributes)
+                Console.WriteLine("Key {0}, value {1}", kvp.Key, kvp.Value);
         }
 
         static void AddDevicePushOption(RTMClient client, MessageCategory messageCategory, long targetId, HashSet<byte> mTypes = null)

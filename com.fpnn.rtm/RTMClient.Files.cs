@@ -126,6 +126,47 @@ namespace com.fpnn.rtm
             }
         }
 
+        //===========================[ IPv4 Convert IPv6 Utilies ]=========================//
+        private string ConvertIPv4ToIPv6(string ipv4)
+        {
+            string[] parts = ipv4.Split(new Char[] { '.' });
+            if (parts.Length != 4)
+                return string.Empty;
+
+            foreach (string part in parts)
+            {
+                int partInt = Int32.Parse(part);
+                if (partInt > 255 || partInt < 0)
+                    return string.Empty;
+            }
+
+            string part7 = Convert.ToString(Int32.Parse(parts[0]) * 256 + Int32.Parse(parts[1]), 16);
+            string part8 = Convert.ToString(Int32.Parse(parts[2]) * 256 + Int32.Parse(parts[3]), 16);
+            return "64:ff9b::" + part7 + ":" + part8;
+        }
+
+        private bool ConvertIPv4EndpointToIPv6IPPort(string ipv4endpoint, out string ipv6, out int port)
+        {
+            int idx = ipv4endpoint.LastIndexOf(':');
+            if (idx == -1)
+            {
+                ipv6 = string.Empty;
+                port = 0;
+
+                return false;
+            }
+
+            string ipv4 = ipv4endpoint.Substring(0, idx);
+            string portString = ipv4endpoint.Substring(idx + 1);
+            port = Convert.ToInt32(portString, 10);
+
+            ipv6 = ConvertIPv4ToIPv6(ipv4);
+            if (ipv6.Length == 0)
+                return false;
+
+            return true;
+        }
+
         //===========================[ File Utilies ]=========================//
         private void UpdateTimeout(ref int timeout, ref long lastActionTimestamp)
         {
